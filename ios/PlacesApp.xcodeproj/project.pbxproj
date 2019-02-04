@@ -616,7 +616,7 @@
 /* Begin PBXNativeTarget section */
 		00E356ED1AD99517003FC87E /* PlacesAppTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "PlacesAppTests" */;
+			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration placeList for PBXNativeTarget "PlacesAppTests" */;
 			buildPhases = (
 				00E356EA1AD99517003FC87E /* Sources */,
 				00E356EB1AD99517003FC87E /* Frameworks */,
@@ -634,7 +634,7 @@
 		};
 		13B07F861A680F5B00A75B9A /* PlacesApp */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "PlacesApp" */;
+			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration placeList for PBXNativeTarget "PlacesApp" */;
 			buildPhases = (
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
@@ -652,7 +652,7 @@
 		};
 		2D02E47A1E0B4A5D006451C7 /* PlacesApp-tvOS */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 2D02E4BA1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "PlacesApp-tvOS" */;
+			buildConfigurationList = 2D02E4BA1E0B4A5E006451C7 /* Build configuration placeList for PBXNativeTarget "PlacesApp-tvOS" */;
 			buildPhases = (
 				2D02E4771E0B4A5D006451C7 /* Sources */,
 				2D02E4781E0B4A5D006451C7 /* Frameworks */,
@@ -670,7 +670,7 @@
 		};
 		2D02E48F1E0B4A5D006451C7 /* PlacesApp-tvOSTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 2D02E4BB1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "PlacesApp-tvOSTests" */;
+			buildConfigurationList = 2D02E4BB1E0B4A5E006451C7 /* Build configuration placeList for PBXNativeTarget "PlacesApp-tvOSTests" */;
 			buildPhases = (
 				2D02E48C1E0B4A5D006451C7 /* Sources */,
 				2D02E48D1E0B4A5D006451C7 /* Frameworks */,
@@ -713,7 +713,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "PlacesApp" */;
+			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration placeList for PBXProject "PlacesApp" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -1456,7 +1456,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "PlacesAppTests" */ = {
+		00E357021AD99517003FC87E /* Build configuration placeList for PBXNativeTarget "PlacesAppTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				00E356F61AD99517003FC87E /* Debug */,
@@ -1465,7 +1465,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "PlacesApp" */ = {
+		13B07F931A680F5B00A75B9A /* Build configuration placeList for PBXNativeTarget "PlacesApp" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				13B07F941A680F5B00A75B9A /* Debug */,
@@ -1474,7 +1474,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		2D02E4BA1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "PlacesApp-tvOS" */ = {
+		2D02E4BA1E0B4A5E006451C7 /* Build configuration placeList for PBXNativeTarget "PlacesApp-tvOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				2D02E4971E0B4A5E006451C7 /* Debug */,
@@ -1483,7 +1483,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		2D02E4BB1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "PlacesApp-tvOSTests" */ = {
+		2D02E4BB1E0B4A5E006451C7 /* Build configuration placeList for PBXNativeTarget "PlacesApp-tvOSTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				2D02E4991E0B4A5E006451C7 /* Debug */,
@@ -1492,7 +1492,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "PlacesApp" */ = {
+		83CBB9FA1A601CBA00E9B192 /* Build configuration placeList for PBXProject "PlacesApp" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				83CBBA201A601CBA00E9B192 /* Debug */,
