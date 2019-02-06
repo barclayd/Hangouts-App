@@ -7,10 +7,10 @@ import configureStore from './src/store/configureStore';
 
 const store = configureStore();
 
-const app = () => (
+const RNRedux = () => (
     <Provider store={store}>
         <App />
     </Provider>
 );
 
-AppRegistry.registerComponent(appName, () => app);
+AppRegistry.registerComponent(appName, () => RNRedux);
