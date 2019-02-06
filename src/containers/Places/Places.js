@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {StyleSheet, View} from 'react-native';
 import PlaceInput from '../../components/PlaceInput/PlaceInput';
 import PlaceList from '../../components/PlaceList/PlaceList';
+import placeImage from '../../assets/manchester.jpg';
 
 class Places extends Component {
 
@@ -24,7 +25,8 @@ class Places extends Component {
             return {
                 places: prevState.places.concat({
                     key: Math.random(),
-                    value: prevState.placeName
+                    name: prevState.placeName,
+                    image: placeImage
                 }),
                 placeName: ''
             }

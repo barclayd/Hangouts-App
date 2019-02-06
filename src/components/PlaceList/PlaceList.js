@@ -10,7 +10,8 @@ const placeList = (props) => {
         renderItem={(info) => (
             <ListItem
                   itemId={info.item.key}
-                  placeName={info.item.value}
+                  placeName={info.item.name}
+                  placeImage={info.item.image}
                   removeHandler={props.removeItem}
             />
         )}
