@@ -2,13 +2,14 @@ import React, {Component} from 'react';
 import {StyleSheet, View} from 'react-native';
 import PlaceInput from '../../components/PlaceInput/PlaceInput';
 import PlaceList from '../../components/PlaceList/PlaceList';
-import placeImage from '../../assets/manchester.jpg';
+import PlaceDetail from '../../components/PlaceDetail/PlaceDetail';
 
 class Places extends Component {
 
     state = {
         placeName: '',
-        places: []
+        places: [],
+        selectedPlace: null
     };
 
     placeNameChangeHandler = (value) => {
@@ -26,24 +27,45 @@ class Places extends Component {
                 places: prevState.places.concat({
                     key: Math.random(),
                     name: prevState.placeName,
-                    image: placeImage
+                    image: {
+                        uri: 'https://www.visitbritain.com/sites/default/files/consumer_destinations/teaser_images/manchester_town_hall.jpg'
+                    }
                 }),
                 placeName: ''
             }
         });
     };
 
-    placeRemoveHandler = (key) => {
+    placeRemoveHandler = () => {
         this.setState(prevState => {
             return {
-                places: prevState.places.filter((place) => place.key !== key)
+                places: prevState.places.filter((place) => place.key !== prevState.selectedPlace.key)
             }
+        });
+        this.closeModal();
+    };
+
+    closeModal = () => {
+        this.setState({
+            selectedPlace: null
         })
+    };
+
+    placeSelectedHandler = (key) => {
+        this.setState(prevState => {
+            return {
+                selectedPlace: prevState.places.find(place => place.key === key)
+            }
+        });
     };
 
     render() {
         return (
             <View style={styles.container}>
+                <PlaceDetail
+                    selectedPlace={this.state.selectedPlace}
+                    onModalClosed={this.closeModal}
+                    onRemoveItem={this.placeRemoveHandler}/>
                 <PlaceInput
                     placeholder='Enter a place...'
                     placeName={this.state.placeName}
@@ -53,7 +75,7 @@ class Places extends Component {
                 />
                 <PlaceList
                     places={this.state.places}
-                    removeItem={this.placeRemoveHandler}/>
+                    onItemSelected={this.placeSelectedHandler}/>
             </View>
         )
     }

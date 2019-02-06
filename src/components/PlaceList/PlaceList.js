@@ -12,7 +12,7 @@ const placeList = (props) => {
                   itemId={info.item.key}
                   placeName={info.item.name}
                   placeImage={info.item.image}
-                  removeHandler={props.removeItem}
+                  onItemSelected={props.onItemSelected}
             />
         )}
       />
