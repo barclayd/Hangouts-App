@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import {connect} from 'react-redux';
 import Places from './src/containers/Places/Places';
 
 class App extends Component {
@@ -11,4 +12,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default connect(App);
