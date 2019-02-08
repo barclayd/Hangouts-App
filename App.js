@@ -1,14 +1,15 @@
-import React, {Component} from 'react';
-import Places from './src/containers/Places/Places';
+import {Navigation} from 'react-native-navigation';
 
-class App extends Component {
-  render() {
-    return (
-      <React.Fragment>
-          <Places/>
-      </React.Fragment>
-    );
+import AuthScreen from './src/screens/Auth/Auth';
+
+// register screens
+Navigation.registerComponent("places-app.AuthScreen", () => AuthScreen);
+
+// start app
+
+Navigation.startSingleScreenApp({
+  screen: {
+    screen: "places-app.AuthScreen",
+    title: "Login"
   }
-}
-
-export default App;
+});
