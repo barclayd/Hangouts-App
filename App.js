@@ -11,7 +11,7 @@ import PlaceDetailScreen from './src/screens/PlaceDetail/PlaceDetail';
 Navigation.registerComponent("places-app.AuthScreen", () => AuthScreen, store, Provider);
 Navigation.registerComponent("places-app.SharePlaceScreen", () => SharePlaceScreen, store, Provider);
 Navigation.registerComponent("places-app.FindPlaceScreen", () => FindPlaceScreen, store, Provider);
-Navigation.registerComponent("places-app.PlaceDetailScreen", () => PlaceDetailScreen);
+Navigation.registerComponent("places-app.PlaceDetailScreen", () => PlaceDetailScreen, store, Provider);
 
 // start app
 
