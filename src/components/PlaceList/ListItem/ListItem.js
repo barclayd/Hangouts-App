@@ -2,7 +2,7 @@ import React from 'react';
 import {Text, View, StyleSheet, TouchableOpacity, Image} from 'react-native';
 
 const listItem = (props) => (
-    <TouchableOpacity onPress={() => props.onItemSelected(props.itemId)} onLongPress={() => alert(`Item id: ${props.itemId} was long pressed`)}>
+    <TouchableOpacity onPress={props.onItemPressed} onLongPress={() => alert(`Item id: ${props.itemId} was long pressed`)}>
         <View style={styles.listItem}>
             <Text style={{fontSize: 20}}>{props.placeName}</Text>
             <Image resizeMode='cover' source={props.placeImage} style={styles.placeImage}/>
