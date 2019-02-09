@@ -3,7 +3,7 @@ import {View} from 'react-native';
 import {connect} from 'react-redux';
 
 import PlaceInput from '../../components/PlaceInput/PlaceInput';
-import { addPlace } from '../../store/actions/index';
+import * as actions from '../../store/actions/index';
 
 class SharePlaceScreen extends Component {
 
@@ -22,7 +22,7 @@ class SharePlaceScreen extends Component {
 
 const mapDispatchToProps = dispatch => {
     return {
-        onAddPlace: (placeName) => dispatch(addPlace(placeName))
+        onAddPlace: (placeName) => dispatch(actions.addPlace(placeName))
     };
 };
 
