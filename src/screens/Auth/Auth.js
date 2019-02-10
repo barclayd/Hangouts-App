@@ -10,23 +10,21 @@ import backgroundImage from '../../assets/background.jpg';
 class AuthScreen extends Component {
     constructor(props) {
         super(props);
-        Dimensions.addEventListener("change", () => {
-            this.setState({
-                respStyles: {
-                    pwContainerDirection: Dimensions.get("window").height > 800 ? "column" : 'row',
-                    pwContainerJustifyContent: Dimensions.get("window").height > 800 ? 'flex-start' : 'space-between',
-                    pwWrapperWidth: Dimensions.get("window").height > 800 ? '100%' : '40%'
-                }
-            })
-        });
+        Dimensions.addEventListener("change", this.updateStyles);
     }
 
+    componentWillUnmount() {
+        Dimensions.removeEventListener("change", this.updateStyles);
+    }
+
+    updateStyles = () => {
+        this.setState({
+            viewMode: Dimensions.get("window").height > 800 ? 'portrait' : 'landscape'
+        });
+    };
+
     state = {
-        respStyles: {
-            pwContainerDirection: "column",
-            pwContainerJustifyContent: 'flex-start',
-            pwWrapperWidth: '100%'
-        }
+        viewMode: Dimensions.get("window").height > 800 ? 'portrait' : 'landscape'
     };
 
     loginHandler = () => {
@@ -34,43 +32,37 @@ class AuthScreen extends Component {
     };
 
     render() {
-        let headingText = null;
-        if (Dimensions.get("window").height > 800) {
-            headingText = (
-                <MainText>
-                    <HeadingText>Login</HeadingText>
-                </MainText>
-            );
-        }
+        const headingText = (
+            <MainText>
+                <HeadingText>Login</HeadingText>
+            </MainText>
+        );
+
 
         return (
             <ImageBackground source={backgroundImage} style={styles.backgroundImage}>
-            <View style={styles.container}>
-                {headingText}
-                <ButtonWithBackground color='#a1d0ff' onPress={() => alert('Hello!')}>Switch to Login</ButtonWithBackground>
-                <View style={styles.inputContainer}>
-                <DefaultInput placeholder='Email' style={styles.input}/>
-                <View style={{
-                    flexDirection: this.state.respStyles.pwContainerDirection,
-                    justifyContent: this.state.respStyles.pwContainerJustifyContent
-                }}>
-                    <View style={{
-                        width: this.state.respStyles.pwWrapperWidth
-                    }}>
-                        <DefaultInput placeholder='Password' style={styles.input} />
+                <View style={styles.container}>
+                    {this.state.viewMode === 'portrait' ? headingText : null}
+                    <ButtonWithBackground color='#a1d0ff' onPress={() => alert('Hello!')}>Switch to
+                        Login</ButtonWithBackground>
+                    <View style={styles.inputContainer}>
+                        <DefaultInput placeholder='Email' style={styles.input}/>
+                        <View
+                            style={this.state.viewMode === 'portrait' ? styles.portraitPasswordContainer : styles.landscapePasswordContainer}>
+                            <View
+                                style={this.state.viewMode === 'portrait' ? styles.portraitPasswordWrapper : styles.landscapePasswordWrapper}>
+                                <DefaultInput placeholder='Password' style={styles.input}/>
+                            </View>
+                            <View
+                                style={this.state.viewMode === 'portrait' ? styles.portraitPasswordWrapper : styles.landscapePasswordWrapper}>
+                                <DefaultInput placeholder='Confirm Password' style={styles.input}/>
+                            </View>
+                        </View>
                     </View>
-                    <View style={{
-                        width: this.state.respStyles.pwWrapperWidth
-                    }}>
-                        <DefaultInput placeholder='Confirm Password' style={styles.input}/>
-                    </View>
+                    <ButtonWithBackground color='#a1d0ff' onPress={this.loginHandler}>Submit</ButtonWithBackground>
                 </View>
-                </View>
-                <ButtonWithBackground color='#a1d0ff' onPress={this.loginHandler}>Submit</ButtonWithBackground>
-            </View>
             </ImageBackground>
-
-        );
+        )
     }
 }
 
@@ -92,12 +84,19 @@ const styles = StyleSheet.create({
         width: '100%',
         flex: 1
     },
-    passwordContainer: {
-        flexDirection: Dimensions.get("window").height > 800 ? 'column' : 'row',
+    landscapePasswordContainer: {
+        flexDirection: 'row',
         justifyContent: 'space-between',
     },
-    passwordWrapper: {
-        width: Dimensions.get("window").height > 800 ? '100%' : '40%'
+    portraitPasswordContainer: {
+        flexDirection: 'column',
+        justifyContent: 'flex-start',
+    },
+    landscapePasswordWrapper: {
+        width: '40%'
+    },
+    portraitPasswordWrapper: {
+        width: '100%'
     }
 });
 
