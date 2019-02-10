@@ -9,6 +9,10 @@ import Map from '../../components/MapPicker/MapPicker';
 import * as actions from '../../store/actions/index';
 
 class SharePlaceScreen extends Component {
+    static navigatorStyle = {
+        navBarButtonColor: '#003366'
+    };
+
     constructor(props) {
         super(props);
         this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent);

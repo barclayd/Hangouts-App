@@ -72,7 +72,8 @@ class PlaceDetail extends Component {
 
 const styles = StyleSheet.create({
     container: {
-        margin: 40
+        margin: 40,
+        flex: 1
     },
     landscapeContainer: {
         flexDirection: 'row',
@@ -89,7 +90,8 @@ const styles = StyleSheet.create({
     landscapeTextIconContainer: {
         flexDirection: 'column',
         alignItems: 'center',
-        width: '50%'
+        width: '50%',
+        flex: 1
     },
     portraitPlaceName: {
         fontWeight: 'bold',
@@ -100,7 +102,7 @@ const styles = StyleSheet.create({
     },
     deleteButton: {
         marginTop: 10,
-        alignSelf: 'flex-end'
+        alignSelf: 'center'
     }
 });
 
