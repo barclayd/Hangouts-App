@@ -14,7 +14,8 @@ class FindPlaceScreen extends Component {
 
     state = {
       placesLoaded: false,
-        removeAnimation: new Animated.Value(1)
+        removeAnimation: new Animated.Value(1),
+        fadeInAnimation: new Animated.Value(0)
     };
 
     onNavigatorEvent = (event) => {
@@ -44,6 +45,19 @@ class FindPlaceScreen extends Component {
             toValue: 0,
             duration: 500,
             useNativeDriver: true
+        }).start(() => {
+            this.setState({
+                placesLoaded: true
+            });
+            this.placesLoadedHandler();
+        });
+    };
+
+    placesLoadedHandler = () => {
+        Animated.timing(this.state.fadeInAnimation, {
+            toValue: 1,
+            duration: 1000,
+            useNativeDriver: true
         }).start();
     };
 
@@ -70,8 +84,18 @@ class FindPlaceScreen extends Component {
         );
         if (this.state.placesLoaded) {
             content = (
+                <Animated.View
+                    style={{
+                        opacity: this.state.fadeInAnimation,
+                        transform: [
+                            {
+                                scale: this.state.fadeInAnimation
+                            }
+                        ]
+                    }}>
                 <PlaceList
                     places={this.props.places} onItemSelected={this.itemSelectedHandler}/>
+                </Animated.View>
             )
         }
         return (
