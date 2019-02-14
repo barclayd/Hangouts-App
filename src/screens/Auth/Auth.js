@@ -32,21 +32,24 @@ class AuthScreen extends Component {
                 valid: false,
                 validationRules: {
                     isEmail: true
-                }
+                },
+                touched: false
             },
             password:  {
                 value: '',
                 valid: false,
                 validationRules: {
                     minLength: 6
-                }
+                },
+                touched: false
             },
             confirmPassword: {
                 value: '',
                 valid: false,
                 validationRules: {
                     equalTo: 'password'
-                }
+                },
+                touched: false
             }
         }
     };
@@ -82,7 +85,8 @@ class AuthScreen extends Component {
                     [key]: {
                         ...prevState.controls[key],
                         value: value,
-                        valid: validate(value, prevState.controls[key].validationRules, connectedValue)
+                        valid: validate(value, prevState.controls[key].validationRules, connectedValue),
+                        touched: true
                     }
                 }
             }
@@ -112,6 +116,8 @@ class AuthScreen extends Component {
                             autoCapitalize='none'
                             keyboardType='email-address'
                             value={this.state.controls.email.value}
+                            valid={this.state.controls.email.valid}
+                            touched={this.state.controls.email.touched}
                             onChangeText={(val) => this.updateInputHandler('email', val)}/>
                         <View
                             style={this.state.viewMode === 'portrait' ? styles.portraitPasswordContainer : styles.landscapePasswordContainer}>
@@ -122,6 +128,8 @@ class AuthScreen extends Component {
                                     style={styles.input}
                                     secureTextEntry
                                     textContentType='newPassword'
+                                    valid={this.state.controls.password.valid}
+                                    touched={this.state.controls.password.touched}
                                     onChangeText={(val) => this.updateInputHandler('password', val)}/>
                             </View>
                             <View
@@ -131,11 +139,16 @@ class AuthScreen extends Component {
                                     textContentType='password'
                                     style={styles.input}
                                     secureTextEntry
+                                    valid={this.state.controls.confirmPassword.valid}
+                                    touched={this.state.controls.confirmPassword.touched}
                                     onChangeText={(val) => this.updateInputHandler('confirmPassword', val)}/>
                             </View>
                         </View>
                     </View>
-                    <ButtonWithBackground color='#a1d0ff' onPress={this.loginHandler}>Submit</ButtonWithBackground>
+                    <ButtonWithBackground
+                        color='#a1d0ff'
+                        disabled={!this.state.controls.password.valid || !this.state.controls.confirmPassword.valid || !this.state.controls.email.valid}
+                        onPress={this.loginHandler}>Submit</ButtonWithBackground>
                 </View>
             </ImageBackground>
         )
