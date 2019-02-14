@@ -1,10 +1,12 @@
 import React, {Component} from 'react';
+import {connect} from 'react-redux';
 import {View, StyleSheet, ImageBackground, Dimensions} from 'react-native';
 import DefaultInput from '../../components/UI/DefaultInput/DefaultInput';
 import HeadingText from '../../components/UI/HeadingText/HeadingText';
 import MainText from '../../components/UI/MainText/MainText';
 import ButtonWithBackground from '../../components/UI/ButtonWithBackground/ButtonWithBackground';
 import startMainTabs from '../MainTabs/startMainTabs';
+import * as actions from '../../store/actions/index';
 import backgroundImage from '../../assets/background.jpg';
 import validate from '../../utility/validation';
 
@@ -55,6 +57,11 @@ class AuthScreen extends Component {
     };
 
     loginHandler = () => {
+        const authData = {
+            email: this.state.controls.email.value,
+            password: this.state.controls.password.value
+        };
+        this.props.onLogin(authData);
         startMainTabs();
     };
 
@@ -189,4 +196,10 @@ const styles = StyleSheet.create({
     }
 });
 
-export default AuthScreen;
+const mapDispatchToProps = dispatch => {
+    return {
+        onLogin: authData => dispatch(actions.tryAuth(authData))
+    }
+};
+
+export default connect(null, mapDispatchToProps)(AuthScreen);
