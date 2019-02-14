@@ -1,11 +1,12 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {View, StyleSheet, ImageBackground, Dimensions} from 'react-native';
+import {View, StyleSheet, ImageBackground, Dimensions, KeyboardAvoidingView} from 'react-native';
 import DefaultInput from '../../components/UI/DefaultInput/DefaultInput';
 import HeadingText from '../../components/UI/HeadingText/HeadingText';
 import MainText from '../../components/UI/MainText/MainText';
 import ButtonWithBackground from '../../components/UI/ButtonWithBackground/ButtonWithBackground';
 import startMainTabs from '../MainTabs/startMainTabs';
+import {DismissKeyboard} from "../../components/Utilities/DismissKeyboard";
 import * as actions from '../../store/actions/index';
 import backgroundImage from '../../assets/background.jpg';
 import validate from '../../utility/validation';
@@ -136,8 +137,11 @@ class AuthScreen extends Component {
 
 
         return (
+            <DismissKeyboard>
             <ImageBackground source={backgroundImage} style={styles.backgroundImage}>
-                <View style={styles.container}>
+                <KeyboardAvoidingView
+                    style={styles.container}
+                    behavior="padding">
                     {this.state.viewMode === 'portrait' ? headingText : null}
                     <ButtonWithBackground color='#a1d0ff' onPress={this.switchAuthModeHandler}>Switch to {this.state.authMode === 'login' ? 'Sign Up' : 'Login'}</ButtonWithBackground>
                     <View style={styles.inputContainer}>
@@ -145,7 +149,7 @@ class AuthScreen extends Component {
                             placeholder='Email'
                             style={styles.input}
                             textContentType='username'
-                            autoCorrect= {false}
+                            autoCorrect={false}
                             autoCapitalize='none'
                             keyboardType='email-address'
                             value={this.state.controls.email.value}
@@ -172,9 +176,10 @@ class AuthScreen extends Component {
                         color='#a1d0ff'
                         disabled={!this.state.controls.password.valid || !this.state.controls.confirmPassword.valid && this.state.authMode === 'signup' || !this.state.controls.email.valid}
                         onPress={this.loginHandler}>Submit</ButtonWithBackground>
-                </View>
+            </KeyboardAvoidingView>
             </ImageBackground>
-        )
+        </DismissKeyboard>
+    )
     }
 }
 
