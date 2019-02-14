@@ -1,12 +1,15 @@
 import React, {Component} from 'react';
-import {View, Button, StyleSheet, ScrollView} from 'react-native';
+import {View, Button, StyleSheet} from 'react-native';
 import {connect} from 'react-redux';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scrollview'
 import PlaceInput from '../../components/PlaceInput/PlaceInput';
 import MainText from '../../components/UI/MainText/MainText';
 import HeadingText from '../../components/UI/HeadingText/HeadingText';
 import ImagePicker from '../../components/ImagePicker/ImagePicker';
+import {DismissKeyboard} from '../../components/Utilities/DismissKeyboard';
 import Map from '../../components/MapPicker/MapPicker';
 import * as actions from '../../store/actions/index';
+import validate from "../../utility/validation";
 
 class SharePlaceScreen extends Component {
     static navigatorStyle = {
@@ -19,22 +22,51 @@ class SharePlaceScreen extends Component {
     }
 
     state = {
-        placeName: ''
+        controls: {
+            placeName: {
+                value: '',
+                valid: false,
+                validationRules: {
+                    isNotNull: false
+                },
+                touched: false
+            }
+        }
     };
 
-    placeNameChangeHandler = (value) => {
-        this.setState({
-            placeName: value
+    updateInputHandler = (key, value) => {
+        this.setState(prevState => {
+           return {
+               controls: {
+                   ...prevState.controls,
+                   [key]: {
+                       ...prevState.controls[key],
+                       value: value,
+                       valid: validate(value, prevState.controls[key].validationRules),
+                       touched: true
+                   }
+               }
+           }
         });
     };
 
     placeSubmitHandler = () => {
-        if (this.state.placeName.trim() === "") {
+        if (this.state.controls.placeName.value.trim() === "") {
             return;
         }
-        this.props.onAddPlace(this.state.placeName);
-        this.setState({
-            placeName: ''
+        this.props.onAddPlace(this.state.controls.placeName.value);
+        this.setState(prevState => {
+           return {
+               controls: {
+                   ...prevState.controls,
+                   placeName: {
+                       ...prevState.controls.placeName,
+                       value: null,
+                       valid: false,
+                       touched: false
+                   }
+               }
+           }
         });
     };
 
@@ -51,7 +83,8 @@ class SharePlaceScreen extends Component {
 
     render() {
         return (
-            <ScrollView>
+            <DismissKeyboard>
+            <KeyboardAwareScrollView>
                 <View style={styles.container}>
                     <MainText>
                         <HeadingText>
@@ -60,12 +93,18 @@ class SharePlaceScreen extends Component {
                     </MainText>
                     <ImagePicker />
                     <Map />
-                    <PlaceInput placeholder='Place Name' value={this.state.placeName} placeChangeName={this.placeNameChangeHandler}/>
+                    <PlaceInput
+                        placeholder='Place Name'
+                        value={this.state.controls.placeName.value}
+                        valid={this.state.controls.placeName.valid}
+                        touched={this.state.controls.placeName.touched}
+                        placeChangeName={(val) => this.updateInputHandler('placeName', val)}/>
                     <View style={styles.button}>
-                        <Button title='Share Place' onPress={this.placeSubmitHandler}/>
+                        <Button disabled={!this.state.controls.placeName.valid} title='Share Place' onPress={this.placeSubmitHandler}/>
                     </View>
                 </View>
-            </ScrollView>
+            </KeyboardAwareScrollView>
+            </DismissKeyboard>
         )
     }
 }
