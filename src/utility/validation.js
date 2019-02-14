@@ -11,6 +11,9 @@ const validate = (val, rules, connectedValue) => {
           case 'equalTo':
               isValid = isValid && passwordValidator(val, connectedValue[rule]);
               break;
+          case 'isNotNull':
+              isValid = isValid && lengthValidator(val);
+              break;
           default:
               isValid = true;
       }
@@ -28,6 +31,10 @@ const minLengthValidator = (val, minLength) => {
 
 const passwordValidator = (val, password) => {
     return val === password
+};
+
+const lengthValidator = (val) => {
+    return val.length > 0
 };
 
 export default validate;
