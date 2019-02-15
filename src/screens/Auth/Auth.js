@@ -127,6 +127,7 @@ class AuthScreen extends Component {
                         textContentType='password'
                         style={styles.input}
                         secureTextEntry
+                        value={this.state.controls.confirmPassword.value}
                         valid={this.state.controls.confirmPassword.valid}
                         touched={this.state.controls.confirmPassword.touched}
                         onChangeText={(val) => this.updateInputHandler('confirmPassword', val)}/>
@@ -165,6 +166,7 @@ class AuthScreen extends Component {
                                     style={styles.input}
                                     secureTextEntry
                                     textContentType='newPassword'
+                                    value={this.state.controls.password.value}
                                     valid={this.state.controls.password.valid}
                                     touched={this.state.controls.password.touched}
                                     onChangeText={(val) => this.updateInputHandler('password', val)}/>
