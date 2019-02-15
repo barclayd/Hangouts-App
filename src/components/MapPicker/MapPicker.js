@@ -1,33 +1,45 @@
-import React from 'react';
-import {StyleSheet, View, Text, Button} from 'react-native';
+import React, {Component} from 'react';
+import {StyleSheet, View, Button, Dimensions} from 'react-native';
+import MapView from 'react-native-maps';
 
-const mapPicker = props => {
+class MapPicker extends Component {
 
-    return (
-        <>
-            <View style={styles.placeholder}>
-                <Text>
-                    Map
-                </Text>
+    state = {
+        focusedLocation: {
+            latitude: 51.4816,
+            longitude: -3.1791,
+            latitudeDelta: 0.0122,
+            longitudeDelta: Dimensions.get('window').width / Dimensions.get('window').height * 0.122
+        }
+    };
+
+    render() {
+        return (
+            <View style={styles.container}>
+                <MapView
+                    initialRegion={this.state.focusedLocation}
+                    style={styles.map}
+                />
+                <View style={styles.button}>
+                    <Button title="Locate me" onPress={() => alert('Pick location!')}/>
+                </View>
             </View>
-            <View style={styles.button}>
-                <Button title="Locate me" onPress={() => alert('Pick location!')}/>
-            </View>
-        </>
-    )
-};
+        )
+    }
+}
 
 const styles = StyleSheet.create({
-    placeholder: {
-        borderWidth: 1,
-        borderColor: '#000',
-        backgroundColor: '#eee',
-        width: '80%',
-        height: 150
+    container: {
+        width: "100%",
+        alignItems: "center"
+    },
+    map: {
+        width: '100%',
+        height: 250
     },
     button: {
         margin: 8
     }
 });
 
-export default mapPicker;
+export default MapPicker;
