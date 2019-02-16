@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
-import {View, Image, Text, StyleSheet, TouchableOpacity, Platform, Dimensions} from 'react-native';
+import {View, Image, Text, StyleSheet, TouchableOpacity, Platform, Dimensions, ScrollView} from 'react-native';
 import {connect} from 'react-redux';
 import Icon from 'react-native-vector-icons/Ionicons';
+import MapDisplay from '../../components/MapDisplay/MapDisplay';
 import * as actions from '../../store/actions/index';
 
 class PlaceDetail extends Component {
@@ -34,11 +35,16 @@ class PlaceDetail extends Component {
     render() {
 
         const landscapeContent = (
+            <ScrollView style={styles.container}>
             <View style={styles.landscapeContainer}>
                 <View style={styles.landscapePlaceImage}>
                     <Image source={this.props.selectedPlace.image} style={styles.portraitPlaceImage}/>
                 </View>
                 <View style={styles.landscapeTextIconContainer}>
+                    <MapDisplay lat={this.props.selectedPlace.location.latitude} long={this.props.selectedPlace.location.longitude} viewMode={this.state.viewMode}/>
+                </View>
+                </View>
+                <View style={styles.landscapeColumnContainer}>
                     <Text style={styles.portraitPlaceName}>{this.props.selectedPlace.name}</Text>
                     <TouchableOpacity onPress={this.placeDeletedHandler}>
                         <View style={styles.deleteButton}>
@@ -46,7 +52,7 @@ class PlaceDetail extends Component {
                         </View>
                     </TouchableOpacity>
                 </View>
-            </View>
+            </ScrollView>
         );
         if ( Dimensions.get("window").height < 800) {
             return landscapeContent;
@@ -57,7 +63,12 @@ class PlaceDetail extends Component {
                 <View>
                     <View>
                         <Image source={this.props.selectedPlace.image} style={styles.portraitPlaceImage}/>
-                        <Text style={styles.portraitPlaceName}>{this.props.selectedPlace.name}</Text>
+                        <View style={styles.placeText}>
+                            <Text style={styles.portraitPlaceName}>{this.props.selectedPlace.name}</Text>
+                        </View>
+                    </View>
+                    <View style={styles.mapView}>
+                        <MapDisplay lat={this.props.selectedPlace.location.latitude} long={this.props.selectedPlace.location.longitude}/>
                     </View>
                     <TouchableOpacity onPress={this.placeDeletedHandler}>
                         <View style={styles.deleteButton}>
@@ -78,6 +89,9 @@ const styles = StyleSheet.create({
     landscapeContainer: {
         flexDirection: 'row',
         margin: 40
+    },
+    landscapeColumnContainer: {
+        flexDirection: 'column'
     },
     portraitPlaceImage: {
         width: '100%',
@@ -103,6 +117,9 @@ const styles = StyleSheet.create({
     deleteButton: {
         marginTop: 10,
         alignSelf: 'center'
+    },
+    placeText: {
+        marginTop: 20
     }
 });
 
