@@ -1,9 +1,10 @@
 import * as actionTypes from './actionTypes';
 
-export const addPlace = (placeName) => {
+export const addPlace = (placeName, placeLocation) => {
     return {
         type: actionTypes.ADD_PLACE,
-        placeName: placeName
+        placeName: placeName,
+        placeLocation: placeLocation
     };
 };
 
