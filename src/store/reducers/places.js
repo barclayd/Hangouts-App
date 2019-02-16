@@ -12,6 +12,7 @@ const reducer = (state = initialState, action) => {
                 places: state.places.concat({
                     key: Math.random(),
                     name: action.placeName,
+                    location: action.placeLocation,
                     image: {
                         uri: 'https://www.visitbritain.com/sites/default/files/consumer_destinations/teaser_images/manchester_town_hall.jpg'
                     }

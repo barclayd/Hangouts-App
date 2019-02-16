@@ -30,6 +30,10 @@ class SharePlaceScreen extends Component {
                     isNotNull: false
                 },
                 touched: false
+            },
+            location: {
+                value: null,
+                valid: false
             }
         }
     };
@@ -51,23 +55,10 @@ class SharePlaceScreen extends Component {
     };
 
     placeSubmitHandler = () => {
-        if (this.state.controls.placeName.value.trim() === "") {
-            return;
-        }
-        this.props.onAddPlace(this.state.controls.placeName.value);
-        this.setState(prevState => {
-           return {
-               controls: {
-                   ...prevState.controls,
-                   placeName: {
-                       ...prevState.controls.placeName,
-                       value: null,
-                       valid: false,
-                       touched: false
-                   }
-               }
-           }
-        });
+        this.props.onAddPlace(
+            this.state.controls.placeName.value,
+            this.state.controls.location.value
+        );
     };
 
     onNavigatorEvent = (event) => {
@@ -81,6 +72,20 @@ class SharePlaceScreen extends Component {
       }
     };
 
+    locationPickedHandler = location => {
+      this.setState(prevState => {
+          return {
+              controls: {
+                  ...prevState.controls,
+                  location: {
+                      value: location,
+                      valid: true
+                  }
+              }
+          }
+      });
+    };
+
     render() {
         return (
             <DismissKeyboard>
@@ -92,7 +97,7 @@ class SharePlaceScreen extends Component {
                         </HeadingText>
                     </MainText>
                     <ImagePicker />
-                    <Map />
+                    <Map onLocationPicker={this.locationPickedHandler} />
                     <PlaceInput
                         placeholder='Place Name'
                         value={this.state.controls.placeName.value}
@@ -100,7 +105,7 @@ class SharePlaceScreen extends Component {
                         touched={this.state.controls.placeName.touched}
                         placeChangeName={(val) => this.updateInputHandler('placeName', val)}/>
                     <View style={styles.button}>
-                        <Button disabled={!this.state.controls.placeName.valid} title='Share Place' onPress={this.placeSubmitHandler}/>
+                        <Button disabled={!this.state.controls.placeName.valid || !this.state.controls.location.valid} title='Share Place' onPress={this.placeSubmitHandler}/>
                     </View>
                 </View>
             </KeyboardAwareScrollView>
@@ -111,7 +116,7 @@ class SharePlaceScreen extends Component {
 
 const mapDispatchToProps = dispatch => {
     return {
-        onAddPlace: (placeName) => dispatch(actions.addPlace(placeName))
+        onAddPlace: (placeName, placeLocation) => dispatch(actions.addPlace(placeName, placeLocation))
     };
 };
 

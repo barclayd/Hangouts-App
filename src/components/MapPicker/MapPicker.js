@@ -30,6 +30,10 @@ class MapPicker extends Component {
                 },
                 locationChosen: true
             }
+        });
+        this.props.onLocationPicker({
+            latitude: coords.latitude,
+            longitude: coords.longitude
         })
     };
 
