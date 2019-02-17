@@ -5,7 +5,7 @@ import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scrollview'
 import PlaceInput from '../../components/PlaceInput/PlaceInput';
 import MainText from '../../components/UI/MainText/MainText';
 import HeadingText from '../../components/UI/HeadingText/HeadingText';
-import ImagePicker from '../../components/ImagePicker/ImagePicker';
+import PickImage from '../../components/ImagePicker/PickImage';
 import {DismissKeyboard} from '../../components/Utilities/DismissKeyboard';
 import Map from '../../components/MapPicker/MapPicker';
 import * as actions from '../../store/actions/index';
@@ -34,6 +34,10 @@ class SharePlaceScreen extends Component {
             location: {
                 value: null,
                 valid: false
+            },
+            image: {
+                value: null,
+                valid: false
             }
         }
     };
@@ -57,7 +61,8 @@ class SharePlaceScreen extends Component {
     placeSubmitHandler = () => {
         this.props.onAddPlace(
             this.state.controls.placeName.value,
-            this.state.controls.location.value
+            this.state.controls.location.value,
+            this.state.controls.image.value
         );
     };
 
@@ -86,6 +91,20 @@ class SharePlaceScreen extends Component {
       });
     };
 
+    imagePickedHandler = image => {
+        this.setState(prevState => {
+            return {
+                controls: {
+                    ...prevState.controls,
+                    image: {
+                        value: image,
+                        valid: true
+                    }
+                }
+            }
+        })
+    };
+
     render() {
         return (
             <DismissKeyboard>
@@ -96,7 +115,7 @@ class SharePlaceScreen extends Component {
                             Share a place with us!
                         </HeadingText>
                     </MainText>
-                    <ImagePicker />
+                    <PickImage onImagePicked={this.imagePickedHandler} />
                     <Map onLocationPicker={this.locationPickedHandler} />
                     <PlaceInput
                         placeholder='Place Name'
@@ -105,7 +124,10 @@ class SharePlaceScreen extends Component {
                         touched={this.state.controls.placeName.touched}
                         placeChangeName={(val) => this.updateInputHandler('placeName', val)}/>
                     <View style={styles.button}>
-                        <Button disabled={!this.state.controls.placeName.valid || !this.state.controls.location.valid} title='Share Place' onPress={this.placeSubmitHandler}/>
+                        <Button disabled={
+                            !this.state.controls.placeName.valid ||
+                            !this.state.controls.location.valid ||
+                            !this.state.controls.image.valid} title='Share Place' onPress={this.placeSubmitHandler}/>
                     </View>
                 </View>
             </KeyboardAwareScrollView>
@@ -116,7 +138,7 @@ class SharePlaceScreen extends Component {
 
 const mapDispatchToProps = dispatch => {
     return {
-        onAddPlace: (placeName, placeLocation) => dispatch(actions.addPlace(placeName, placeLocation))
+        onAddPlace: (placeName, placeLocation, image) => dispatch(actions.addPlace(placeName, placeLocation, image))
     };
 };
 

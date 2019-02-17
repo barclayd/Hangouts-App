@@ -22,7 +22,6 @@ const mapDisplay = props => {
         </View>
 
     );
-
 };
 
 const styles = StyleSheet.create({
