@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, Button, StyleSheet} from 'react-native';
+import {View, Button, StyleSheet, ActivityIndicator} from 'react-native';
 import {connect} from 'react-redux';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scrollview'
 import PlaceInput from '../../components/PlaceInput/PlaceInput';
@@ -106,6 +106,15 @@ class SharePlaceScreen extends Component {
     };
 
     render() {
+        let submitButton = (
+            <Button disabled={
+            !this.state.controls.placeName.valid ||
+            !this.state.controls.location.valid ||
+            !this.state.controls.image.valid} title='Share Place' onPress={this.placeSubmitHandler}/>
+        );
+        if (this.props.isLoading) {
+            submitButton = <ActivityIndicator />
+        }
         return (
             <DismissKeyboard>
             <KeyboardAwareScrollView>
@@ -124,10 +133,7 @@ class SharePlaceScreen extends Component {
                         touched={this.state.controls.placeName.touched}
                         placeChangeName={(val) => this.updateInputHandler('placeName', val)}/>
                     <View style={styles.button}>
-                        <Button disabled={
-                            !this.state.controls.placeName.valid ||
-                            !this.state.controls.location.valid ||
-                            !this.state.controls.image.valid} title='Share Place' onPress={this.placeSubmitHandler}/>
+                        {submitButton}
                     </View>
                 </View>
             </KeyboardAwareScrollView>
@@ -135,6 +141,12 @@ class SharePlaceScreen extends Component {
         )
     }
 }
+
+const mapStateToProps = state => {
+    return {
+        isLoading: state.ui.isLoading
+    }
+};
 
 const mapDispatchToProps = dispatch => {
     return {
@@ -151,4 +163,4 @@ const styles = StyleSheet.create({
         margin: 8
     }
 });
-export default connect(null, mapDispatchToProps)(SharePlaceScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(SharePlaceScreen);
