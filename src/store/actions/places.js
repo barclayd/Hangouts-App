@@ -1,7 +1,8 @@
 import * as actionTypes from './actionTypes';
-
+import {uiStartLoading, uiStopLoading} from './index';
 export const addPlace = (placeName, placeLocation, placeImage) => {
     return dispatch => {
+        dispatch(uiStartLoading());
         console.log(placeImage.base64);
         fetch("https://us-central1-places-app-1550271704119.cloudfunctions.net/storeImage", {
             method: "POST",
@@ -9,7 +10,11 @@ export const addPlace = (placeName, placeLocation, placeImage) => {
                 image: placeImage.base64
             })
         })
-            .catch(err => console.log(err))
+            .catch(err => {
+                console.log(err);
+                alert("Image upload failed, please try again");
+                dispatch(uiStopLoading());
+            })
             .then(res => res.json())
             .then(parsedRes => {
                 const placeData = {
@@ -22,12 +27,21 @@ export const addPlace = (placeName, placeLocation, placeImage) => {
                     body: JSON.stringify(placeData)
                 });
             })
-            .catch(err => console.log(err))
+            .catch(err => {
+                console.log(err);
+                alert("Image upload failed, please try again");
+                dispatch(uiStopLoading());
+            })
             .then(res => res.json())
             .then(parsedRes => {
                 console.log(parsedRes);
+                dispatch(uiStopLoading());
             })
-            .catch(err => console.log('Error occurred at the end', err))
+            .catch(err => {
+                console.log('Error occurred at the end', err);
+                alert("Image upload failed, please try again");
+                dispatch(uiStopLoading());
+            });
     }
 };
 
