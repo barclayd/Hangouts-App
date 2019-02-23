@@ -45,9 +45,34 @@ export const addPlace = (placeName, placeLocation, placeImage) => {
     }
 };
 
-export const deletePlace = (key) => {
-    return {
-        type: actionTypes.DELETE_PLACE,
-        placeKey: key
+export const getPlaces = () => {
+    return dispatch => {
+        fetch("https://places-app-1550271704119.firebaseio.com/places.json")
+            .catch(err => {
+                alert('Something went wrong');
+                console.log(err);
+            })
+            .then(res => res.json())
+            .then(parsedRes => {
+                const places = [];
+                for (let key in parsedRes) {
+                    places.push({
+                        ...parsedRes[key],
+                        image: {
+                            uri: parsedRes[key].image
+                        },
+                        id: key
+                    })
+                }
+                dispatch(setPlaces(places));
+            })
     }
 };
+
+export const setPlaces = places => {
+    return {
+        type: actionTypes.SET_PLACES,
+        places: places
+    }
+};
+
