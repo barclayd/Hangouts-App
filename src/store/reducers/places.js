@@ -7,21 +7,14 @@ const initialState = {
 
 const reducer = (state = initialState, action) => {
     switch (action.type) {
-        case actionTypes.ADD_PLACE:
+        case actionTypes.SET_PLACES:
             return updateObject(state, {
-                places: state.places.concat({
-                    key: Math.random(),
-                    name: action.placeName,
-                    location: action.placeLocation,
-                    image: {
-                        uri: action.placeImage.uri
-                    }
-                })
+                places: action.places
             });
-        case actionTypes.DELETE_PLACE:
-            return updateObject(state, {
-                places: state.places.filter((place) => place.key !== action.placeKey)
-            });
+        // case actionTypes.DELETE_PLACE:
+        //     return updateObject(state, {
+        //         places: state.places.filter((place) => place.key !== action.placeKey)
+        //     });
         default:
             return state;
     }
