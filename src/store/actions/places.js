@@ -61,7 +61,7 @@ export const getPlaces = () => {
                         image: {
                             uri: parsedRes[key].image
                         },
-                        id: key
+                        key: key
                     })
                 }
                 dispatch(setPlaces(places));
@@ -76,3 +76,16 @@ export const setPlaces = places => {
     }
 };
 
+export const deletePlaces = (placeId) => {
+    return dispatch => {
+        fetch(`https://places-app-1550271704119.firebaseio.com/places/${placeId}.json`, {
+            method: 'DELETE'
+        })
+            .catch(err => {
+                alert('Something went wrong');
+                console.log(err);
+            })
+            .then(res => res.json())
+            .then(dispatch(getPlaces()))
+    }
+};
