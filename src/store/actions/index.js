@@ -1,5 +1,5 @@
 export {
-    addPlace, getPlaces
+    addPlace, getPlaces, deletePlaces
 } from './places';
 
 export {
