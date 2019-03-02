@@ -56,3 +56,14 @@ export const authSetToken = token => {
         token
     }
 };
+
+export const authGetToken = () => {
+    return async (dispatch, getState) => {
+        const token = await getState().auth.token;
+        if (!token) {
+            console.log('Token not found');
+        } else {
+            return token;
+        }
+    }
+};
