@@ -66,6 +66,10 @@ export const getPlaces = () => {
                 }
                 dispatch(setPlaces(places));
             })
+            .catch(err => {
+                alert('Something went wrong');
+                console.log(err);
+            });
     }
 };
 
@@ -87,5 +91,9 @@ export const deletePlaces = (placeId) => {
             })
             .then(res => res.json())
             .then(dispatch(getPlaces()))
+            .catch(err => {
+                alert('Something went wrong');
+                console.log(err);
+            });
     }
 };
