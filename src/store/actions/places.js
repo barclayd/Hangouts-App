@@ -3,7 +3,6 @@ import {uiStartLoading, uiStopLoading, authGetToken} from './index';
 export const addPlace = (placeName, placeLocation, placeImage) => {
     return (dispatch) => {
         dispatch(uiStartLoading());
-        console.log(placeImage.base64);
         dispatch(authGetToken())
             .then(token => {
                 fetch("https://us-central1-places-app-1550271704119.cloudfunctions.net/storeImage", {
@@ -19,11 +18,13 @@ export const addPlace = (placeName, placeLocation, placeImage) => {
                     })
                     .then(res => res.json())
                     .then(parsedRes => {
+                        console.log(parsedRes.imageUrl);
                         const placeData = {
                             name: placeName,
                             location: placeLocation,
                             image: parsedRes.imageUrl
                         };
+                        console.log(token);
                         return fetch(`https://places-app-1550271704119.firebaseio.com/places.json?auth=${token}`, {
                             method: "POST",
                             body: JSON.stringify(placeData)
