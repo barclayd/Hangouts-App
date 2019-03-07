@@ -1,3 +1,5 @@
+import {AsyncStorage} from 'react-native';
+
 import * as actionTypes from './actionTypes';
 import * as actions from './index';
 import startMainTabs from '../../screens/MainTabs/startMainTabs';
@@ -38,7 +40,7 @@ export const authUser = (url, authData) => {
                 if (!parsedRes.idToken) {
                     alert(`Authentication failed due to ${parsedRes.error.message}. Please try again`);
                 } else {
-                    dispatch(authSetToken(parsedRes.idToken));
+                    dispatch(authStoreToken(parsedRes.idToken));
                     startMainTabs();
                 }
             })
@@ -48,6 +50,13 @@ export const authUser = (url, authData) => {
                 dispatch(actions.uiStopLoading());
             });
     };
+};
+
+export const authStoreToken = token => {
+  return dispatch => {
+    dispatch(authSetToken(token));
+    AsyncStorage.setItem("auth:token", token);
+  };
 };
 
 export const authSetToken = token => {
@@ -61,9 +70,22 @@ export const authGetToken = () => {
     return async (dispatch, getState) => {
         const token = await getState().auth.token;
         if (!token) {
-            console.log('Token not found');
+            const tokenFromStorage = await AsyncStorage.getItem("auth:token");
+            if (!tokenFromStorage) {
+                return console.log('no token present in storage');
+            }
         } else {
             return token;
         }
     }
+};
+
+export const authAutoSignIn = () => {
+  return dispatch => {
+      dispatch(authGetToken())
+          .then(token => {
+              startMainTabs();
+          })
+          .catch(err => console.log(err));
+  }
 };
