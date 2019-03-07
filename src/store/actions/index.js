@@ -3,7 +3,7 @@ export {
 } from './places';
 
 export {
-    tryAuth, authGetToken
+    tryAuth, authGetToken, authAutoSignIn
 } from './auth'
 
 export {

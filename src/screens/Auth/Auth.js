@@ -16,6 +16,10 @@ class AuthScreen extends Component {
         Dimensions.addEventListener("change", this.updateStyles);
     }
 
+    componentDidMount() {
+        this.props.onAutoSignIn();
+    }
+
     componentWillUnmount() {
         Dimensions.removeEventListener("change", this.updateStyles);
     }
@@ -233,7 +237,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        onTryAuth: (authData, authMode) => dispatch(actions.tryAuth(authData, authMode))
+        onTryAuth: (authData, authMode) => dispatch(actions.tryAuth(authData, authMode)),
+        onAutoSignIn: () => dispatch(actions.authAutoSignIn())
     }
 };
 
