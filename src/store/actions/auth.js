@@ -4,13 +4,14 @@ import * as actionTypes from './actionTypes';
 import * as actions from './index';
 import startMainTabs from '../../screens/MainTabs/startMainTabs';
 
+const API_KEY = 'AIzaSyCPS1KNVPhI5IxJv63V-4SVK9G_RhDu4lI';
+
 export const tryAuth  = (authData, authMode) => {
    return dispatch => {
        dispatch(actions.uiStartLoading());
-       const apiKey = 'AIzaSyCPS1KNVPhI5IxJv63V-4SVK9G_RhDu4lI';
-       let url = `https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPassword?key=${apiKey}`;
+       let url = `https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPassword?key=${API_KEY}`;
        if (authMode === 'signup') {
-           url = `https://www.googleapis.com/identitytoolkit/v3/relyingparty/signupNewUser?key=${apiKey}`
+           url = `https://www.googleapis.com/identitytoolkit/v3/relyingparty/signupNewUser?key=${API_KEY}`;
        }
        dispatch(authUser(url, authData));
    };
@@ -40,7 +41,7 @@ export const authUser = (url, authData) => {
                 if (!parsedRes.idToken) {
                     alert(`Authentication failed due to ${parsedRes.error.message}. Please try again`);
                 } else {
-                    dispatch(authStoreToken(parsedRes.idToken, parsedRes.expiresIn));
+                    dispatch(authStoreToken(parsedRes.idToken, parsedRes.expiresIn, parsedRes.refreshToken));
                     startMainTabs();
                 }
             })
@@ -52,13 +53,14 @@ export const authUser = (url, authData) => {
     };
 };
 
-export const authStoreToken = (token, expiresIn) => {
+export const authStoreToken = (token, expiresIn, refreshToken) => {
   return dispatch => {
     dispatch(authSetToken(token));
     const now = new Date();
     const expiryDate = now.getTime() + (expiresIn * 1000);
     AsyncStorage.setItem("auth:token", token);
     AsyncStorage.setItem("auth:expiryDate", expiryDate.toString());
+    AsyncStorage.setItem("auth:refreshToken", refreshToken);
   };
 };
 
@@ -87,9 +89,35 @@ export const authGetToken = () => {
                     if (!expiryDate) {
                         return tokenFromStorage;
                     } else {
-                        // dispatch logout
-                        await dispatch(authCleanStorage());
-                        throw new Error('Token has expired');
+                        // check if refreshToken exists
+                        const refreshToken = await AsyncStorage.getItem("auth:refreshToken");
+                        if (refreshToken) {
+                            const url = `https://securetoken.googleapis.com/v1/token?key=${API_KEY}`;
+                            fetch(url, {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/x-www-form-urlencoded'
+                                },
+                                body: "grant_type=refresh_token&refresh_token" + refreshToken
+                            })
+                                .then(res => res.json())
+                                .then(parsedRes => {
+                                    if (parsedRes.id_token) {
+                                        dispatch(authStoreToken(parsedRes.id_token, parsedRes.expires_in, parsedRes.refresh_token));
+                                        return parsedRes.id_token;
+                                    } else {
+                                        dispatch(authClearStorage());
+                                    }
+                                })
+                                .catch(err => {
+                                    console.log(err);
+                                })
+
+                        } else {
+                            // dispatch logout
+                            await dispatch(authClearStorage());
+                            throw new Error('Token has expired');
+                        }
                     }
                 }
             }
@@ -107,7 +135,7 @@ export const authAutoSignIn = () => {
   }
 };
 
-export const authCleanStorage = async () => {
+export const authClearStorage = async () => {
     return dispatch  => {
         AsyncStorage.removeItem("auth:expiryDate");
         AsyncStorage.removeItem("auth:token");
