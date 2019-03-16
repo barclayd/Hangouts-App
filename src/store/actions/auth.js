@@ -88,6 +88,7 @@ export const authGetToken = () => {
                         return tokenFromStorage;
                     } else {
                         // dispatch logout
+                        await dispatch(authCleanStorage());
                         throw new Error('Token has expired');
                     }
                 }
@@ -106,3 +107,9 @@ export const authAutoSignIn = () => {
   }
 };
 
+export const authCleanStorage = async () => {
+    return dispatch  => {
+        AsyncStorage.removeItem("auth:expiryDate");
+        AsyncStorage.removeItem("auth:token");
+    }
+};
