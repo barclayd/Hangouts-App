@@ -40,7 +40,7 @@ export const authUser = (url, authData) => {
                 if (!parsedRes.idToken) {
                     alert(`Authentication failed due to ${parsedRes.error.message}. Please try again`);
                 } else {
-                    dispatch(authStoreToken(parsedRes.idToken));
+                    dispatch(authStoreToken(parsedRes.idToken, parsedRes.expiresIn));
                     startMainTabs();
                 }
             })
@@ -52,10 +52,13 @@ export const authUser = (url, authData) => {
     };
 };
 
-export const authStoreToken = token => {
+export const authStoreToken = (token, expiresIn) => {
   return dispatch => {
     dispatch(authSetToken(token));
+    const now = new Date();
+    const expiryDate = now.getTime() + (expiresIn * 1000);
     AsyncStorage.setItem("auth:token", token);
+    AsyncStorage.setItem("auth:expiryDate", expiryDate.toString());
   };
 };
 
@@ -73,9 +76,22 @@ export const authGetToken = () => {
             const tokenFromStorage = await AsyncStorage.getItem("auth:token");
             if (!tokenFromStorage) {
                 return console.log('no token present in storage');
+            } else {
+                const expiryDate = await AsyncStorage.getItem("auth:expiryDate");
+                const parsedDate = new Date(parseInt(expiryDate));
+                const now = new Date();
+                console.log(parsedDate, now);
+                if (parsedDate > now) {
+                    return tokenFromStorage;
+                } else {
+                    if (!expiryDate) {
+                        return tokenFromStorage;
+                    } else {
+                        // dispatch logout
+                        throw new Error('Token has expired');
+                    }
+                }
             }
-        } else {
-            return token;
         }
     }
 };
@@ -89,3 +105,4 @@ export const authAutoSignIn = () => {
           .catch(err => console.log(err));
   }
 };
+
