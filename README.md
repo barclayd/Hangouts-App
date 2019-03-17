@@ -8,9 +8,8 @@ Mobile app built for iOS and Android using React Native.
 
 * Uses native features such as image picker, maps and camera
 * Stores shared places to Firebase and retreieves them in Find Places
-* Authentication using Firebase Auth API
+* Authentication using Firebase Auth API. Secure login with refresh token
 
 ### Improvements to be added
 
-* Use of Async storage for storing login tokens
 * Efficiency improvements
