@@ -140,7 +140,7 @@ class SharePlaceScreen extends Component {
                 <View style={styles.container}>
                     <MainText>
                         <HeadingText>
-                            Share a place with us!
+                            Share a place with the world!
                         </HeadingText>
                     </MainText>
                     <PickImage ref={ref => (this.imagePicker = ref)} onImagePicked={this.imagePickedHandler} />
