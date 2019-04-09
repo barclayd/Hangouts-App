@@ -5,7 +5,7 @@ import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scrollview'
 import PlaceInput from '../../components/PlaceInput/PlaceInput';
 import MainText from '../../components/UI/MainText/MainText';
 import HeadingText from '../../components/UI/HeadingText/HeadingText';
-import PickImage from '../../components/ImagePicker/PickImage';
+import PickImage from '../../components/PickImage/PickImage';
 import {DismissKeyboard} from '../../components/Utilities/DismissKeyboard';
 import Map from '../../components/MapPicker/MapPicker';
 import * as actions from '../../store/actions/index';
@@ -21,26 +21,10 @@ class SharePlaceScreen extends Component {
         this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent);
     }
 
-    state = {
-        controls: {
-            placeName: {
-                value: '',
-                valid: false,
-                validationRules: {
-                    isNotNull: false
-                },
-                touched: false
-            },
-            location: {
-                value: null,
-                valid: false
-            },
-            image: {
-                value: null,
-                valid: false
-            }
-        }
-    };
+    componentWillMount() {
+        this.reset();
+    }
+
 
     updateInputHandler = (key, value) => {
         this.setState(prevState => {
@@ -59,15 +43,18 @@ class SharePlaceScreen extends Component {
     };
 
     placeSubmitHandler = () => {
+        console.log(this.state.controls.image);
         this.props.onAddPlace(
             this.state.controls.placeName.value,
             this.state.controls.location.value,
             this.state.controls.image.value
         );
+        this.reset();
+        this.imagePicker.reset();
+        this.mapPicker.reset();
     };
 
     onNavigatorEvent = (event) => {
-      console.log(event);
       if (event.type === 'NavBarButtonPress') {
           if(event.id === "sideDrawerToggle") {
               this.props.navigator.toggleDrawer({
@@ -105,6 +92,29 @@ class SharePlaceScreen extends Component {
         })
     };
 
+    reset = () => {
+        this.setState({
+            controls: {
+                placeName: {
+                    value: '',
+                    valid: false,
+                    validationRules: {
+                        isNotNull: false
+                    },
+                    touched: false
+                },
+                location: {
+                    value: null,
+                    valid: false
+                },
+                image: {
+                    value: null,
+                    valid: false
+                }
+            }
+        })
+    };
+
     render() {
         let submitButton = (
             <Button disabled={
@@ -124,8 +134,8 @@ class SharePlaceScreen extends Component {
                             Share a place with us!
                         </HeadingText>
                     </MainText>
-                    <PickImage onImagePicked={this.imagePickedHandler} />
-                    <Map onLocationPicker={this.locationPickedHandler} />
+                    <PickImage ref={ref => (this.imagePicker = ref)} onImagePicked={this.imagePickedHandler} />
+                    <Map ref={ref => (this.mapPicker = ref)} onLocationPicker={this.locationPickedHandler} />
                     <PlaceInput
                         placeholder='Place Name'
                         value={this.state.controls.placeName.value}
