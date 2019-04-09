@@ -11,6 +11,10 @@ const reducer = (state = initialState, action) => {
             return updateObject(state, {
                 token: action.token
             });
+        case actionTypes.AUTH_REMOVE_TOKEN:
+            return updateObject(state, {
+                token: null
+            });
         default:
             return state;
     }

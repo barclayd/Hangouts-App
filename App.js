@@ -17,7 +17,7 @@ Navigation.registerComponent("places-app.SideDrawer", () => SideDrawer, store, P
 
 // start app
 
-Navigation.startSingleScreenApp({
+export default () => Navigation.startSingleScreenApp({
   screen: {
     screen: "places-app.AuthScreen",
     title: "Login"

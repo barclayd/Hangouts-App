@@ -1,11 +1,5 @@
-export {
-    addPlace, getPlaces, deletePlaces
-} from './places';
+export * from './places';
 
-export {
-    tryAuth, authGetToken, authAutoSignIn
-} from './auth'
+export * from './auth'
 
-export {
-    uiStartLoading, uiStopLoading
-} from './ui'
+export * from './ui'

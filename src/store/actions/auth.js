@@ -3,6 +3,7 @@ import {AsyncStorage} from 'react-native';
 import * as actionTypes from './actionTypes';
 import * as actions from './index';
 import startMainTabs from '../../screens/MainTabs/startMainTabs';
+import App from '../../../App';
 
 const API_KEY = 'AIzaSyCPS1KNVPhI5IxJv63V-4SVK9G_RhDu4lI';
 
@@ -129,15 +130,34 @@ export const authAutoSignIn = () => {
   return dispatch => {
       dispatch(authGetToken())
           .then(token => {
-              startMainTabs();
+              if (token) {
+                  startMainTabs();
+              }
           })
           .catch(err => console.log(err));
   }
 };
 
-export const authClearStorage = async () => {
-    return dispatch  => {
+export const authClearStorage = () => {
+    return dispatch => {
         AsyncStorage.removeItem("auth:expiryDate");
         AsyncStorage.removeItem("auth:token");
+        return AsyncStorage.removeItem("auth:refreshToken");
     }
+};
+
+export const authLogout = () => {
+    return async dispatch => {
+        const cleanedStorage = await dispatch(authClearStorage());
+        if(!cleanedStorage) {
+            await dispatch(authRemoveToken());
+            await App();
+        }
+    };
+};
+
+export const authRemoveToken = () => {
+    return {
+        type: actionTypes.AUTH_REMOVE_TOKEN
+    };
 };
