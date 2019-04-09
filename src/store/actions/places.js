@@ -39,6 +39,8 @@ export const addPlace = (placeName, placeLocation, placeImage) => {
                     .then(parsedRes => {
                         console.log(parsedRes);
                         dispatch(uiStopLoading());
+                        // redirect to new tab
+                        dispatch(placeAdded());
                     })
                     .catch(err => {
                         console.log('Error occurred at the end', err);
@@ -46,6 +48,19 @@ export const addPlace = (placeName, placeLocation, placeImage) => {
                         dispatch(uiStopLoading());
                     });
             });
+    }
+};
+
+export const startAddPlace = () => {
+    return {
+        type: actionTypes.START_ADD_PLACE
+    }
+};
+
+export const placeAdded = () => {
+    console.log('called place added');
+    return {
+        type: actionTypes.PLACE_ADDED
     }
 };
 

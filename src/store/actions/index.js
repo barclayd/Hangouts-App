@@ -1,5 +1,3 @@
 export * from './places';
-
-export * from './auth'
-
-export * from './ui'
+export * from './auth';
+export * from './ui';

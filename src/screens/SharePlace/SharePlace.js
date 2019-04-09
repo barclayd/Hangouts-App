@@ -21,10 +21,15 @@ class SharePlaceScreen extends Component {
         this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent);
     }
 
+    componentDidUpdate() {
+        if (this.props.placeAdded) {
+            this.props.navigator.switchToTab({tabIndex: 0});
+        }
+    }
+
     componentWillMount() {
         this.reset();
     }
-
 
     updateInputHandler = (key, value) => {
         this.setState(prevState => {
@@ -43,7 +48,6 @@ class SharePlaceScreen extends Component {
     };
 
     placeSubmitHandler = () => {
-        console.log(this.state.controls.image);
         this.props.onAddPlace(
             this.state.controls.placeName.value,
             this.state.controls.location.value,
@@ -55,6 +59,9 @@ class SharePlaceScreen extends Component {
     };
 
     onNavigatorEvent = (event) => {
+        if (event.type === "ScreenChangedEvent" && event.id === "willAppear") {
+            this.props.onStartAddPlace();
+        }
       if (event.type === 'NavBarButtonPress') {
           if(event.id === "sideDrawerToggle") {
               this.props.navigator.toggleDrawer({
@@ -116,6 +123,7 @@ class SharePlaceScreen extends Component {
     };
 
     render() {
+        console.log(this.props);
         let submitButton = (
             <Button disabled={
             !this.state.controls.placeName.valid ||
@@ -154,13 +162,15 @@ class SharePlaceScreen extends Component {
 
 const mapStateToProps = state => {
     return {
-        isLoading: state.ui.isLoading
-    }
+        isLoading: state.ui.isLoading,
+        placeAdded: state.places.placeAdded
+    };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
-        onAddPlace: (placeName, placeLocation, image) => dispatch(actions.addPlace(placeName, placeLocation, image))
+        onAddPlace: (placeName, placeLocation, image) => dispatch(actions.addPlace(placeName, placeLocation, image)),
+        onStartAddPlace: () => dispatch(actions.startAddPlace())
     };
 };
 
