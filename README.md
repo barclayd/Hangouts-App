@@ -1,6 +1,7 @@
 # Hangouts
 
 Find and share awesome hangouts using images, text and a location pin!
+
 Mobile app built for iOS and Android using React Native.
 
 ### Code style
@@ -9,6 +10,12 @@ Mobile app built for iOS and Android using React Native.
     [![js-standard-style](https://img.shields.io/badge/deployed%20version-1.0.0-green.svg)](https://github.com/barclayd)
 
 ### Demos and Screenshots
+
+##### Sharing a Hangout
+
+<p align="center">
+    <img alt="Sharing a Hangout" src='https://user-images.githubusercontent.com/39765499/55821169-c0856b00-5af4-11e9-987d-0f9a46480324.gif'>
+</p>
 
 <p align="center">
     <h3>Share Place Screen</h3>
