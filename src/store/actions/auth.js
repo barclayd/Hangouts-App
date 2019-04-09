@@ -85,7 +85,6 @@ export const authGetToken = () => {
                 const expiryDate = await AsyncStorage.getItem("auth:expiryDate");
                 const parsedDate = new Date(parseInt(expiryDate));
                 const now = new Date();
-                console.log(parsedDate, now);
                 if (parsedDate > now) {
                     return tokenFromStorage;
                 } else {
@@ -140,7 +139,7 @@ export const authAutoSignIn = () => {
 };
 
 export const authClearStorage = () => {
-    return dispatch => {
+    return () => {
         AsyncStorage.removeItem("auth:expiryDate");
         AsyncStorage.removeItem("auth:token");
         return AsyncStorage.removeItem("auth:refreshToken");

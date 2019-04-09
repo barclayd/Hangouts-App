@@ -125,7 +125,6 @@ class SharePlaceScreen extends Component {
     };
 
     render() {
-        console.log(this.props);
         let submitButton = (
             <Button disabled={
             !this.state.controls.placeName.valid ||
