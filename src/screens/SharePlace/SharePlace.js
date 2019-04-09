@@ -59,16 +59,18 @@ class SharePlaceScreen extends Component {
     };
 
     onNavigatorEvent = (event) => {
-        if (event.type === "ScreenChangedEvent" && event.id === "willAppear") {
-            this.props.onStartAddPlace();
+        if (event.type === "ScreenChangedEvent") {
+            if (event.id === "willAppear") {
+                this.props.onStartAddPlace();
+            }
         }
-      if (event.type === 'NavBarButtonPress') {
-          if(event.id === "sideDrawerToggle") {
-              this.props.navigator.toggleDrawer({
-                  side: "left"
-              });
-          }
-      }
+        if (event.type === 'NavBarButtonPress') {
+            if(event.id === "sideDrawerToggle") {
+                this.props.navigator.toggleDrawer({
+                    side: "left"
+                });
+            }
+        }
     };
 
     locationPickedHandler = location => {
