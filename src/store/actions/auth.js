@@ -56,26 +56,28 @@ export const authUser = (url, authData) => {
 
 export const authStoreToken = (token, expiresIn, refreshToken) => {
   return dispatch => {
-    dispatch(authSetToken(token));
     const now = new Date();
     const expiryDate = now.getTime() + (expiresIn * 1000);
+    dispatch(authSetToken(token, expiryDate));
     AsyncStorage.setItem("auth:token", token);
     AsyncStorage.setItem("auth:expiryDate", expiryDate.toString());
     AsyncStorage.setItem("auth:refreshToken", refreshToken);
   };
 };
 
-export const authSetToken = token => {
+export const authSetToken = (token, expiryDate) => {
     return {
         type: actionTypes.AUTH_SET_TOKEN,
-        token
+        token,
+        expiryDate
     }
 };
 
 export const authGetToken = () => {
     return async (dispatch, getState) => {
         const token = await getState().auth.token;
-        if (!token) {
+        const expiryDate = await getState().auth.expiryDate;
+        if (!token || new Date(expiryDate) <= new Date()) {
             const tokenFromStorage = await AsyncStorage.getItem("auth:token");
             if (!tokenFromStorage) {
                 return console.log('no token present in storage');
@@ -115,8 +117,7 @@ export const authGetToken = () => {
                                 })
 
                         } else {
-                            // dispatch logout
-                            await dispatch(authClearStorage());
+                            await dispatch(authLogout());
                             throw new Error('Token has expired');
                         }
                     }
